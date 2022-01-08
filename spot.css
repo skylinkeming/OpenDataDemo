@@ -1,0 +1,125 @@
+.navbar {
+  background-color: rgba(251, 249, 240, 0.95);
+  height: 50px;
+  display: flex;
+  align-items: center;
+  margin-bottom:20px;
+}
+
+.container {
+  display: flex;
+  margin: 0 auto;
+  width: 1200px;
+}
+
+.col {
+  display: inline-block;
+}
+
+.card {
+  width: 270px;
+  min-height:200px;
+  margin: 2px 5px 10px;
+  padding: 0 0 15px;
+  background: #fff;
+  box-shadow: rgb(0 0 0 / 20%) 0 1px 2px 1px;
+  transition: 0.15s;
+  overflow: hidden;
+  max-height: 500px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+}
+.card:hover {
+  background: greenyellow;
+}
+
+.card:hover .title {
+  color: white;
+}
+
+.title {
+  background: #a39e7d;
+  text-align: center;
+}
+
+.name {
+  font-size: 20px;
+  color: cadetblue;
+  padding: 10px;
+}
+
+.card img {
+  width: 250px;
+}
+
+.desc {
+  padding: 10px;
+
+  line-height: 1.8;
+  font-size: 10px;
+  margin: 0 10px;
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  max-height: 300px;
+  overflow-y:scroll;
+}
+
+.categoryMenu {
+  position: absolute;
+  border: 1px solid gray;
+  padding: 10px;
+  background: white;
+  border-radius: 5px;
+  z-index:5;
+}
+
+.menuItem {
+  white-space: nowrap;
+  cursor: pointer;
+}
+.menuItem:hover {
+  background: gray;
+  color: white;
+}
+
+.selectCategory {
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 20px;
+  margin-left:50px;
+}
+
+.myFavorite {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.favoriteBtn {
+  position: absolute;
+  width: 30px;
+  right: 10px;
+  bottom: 10px;
+}
+
+.card .favoriteBtn {
+  /* width: 100%; */
+  /* display: none; */
+  background:url('favorite-icon-13.jpeg');
+}
+.card .favoriteBtn img{
+    width:30px;
+}
+.card .favoriteBtn.show {
+  display: inline-block;
+  background:url('/favorite-icon-14.jpeg');
+}
+
+.card:hover .favoriteBtn img {
+  display: inline-block;
+}
+
+
