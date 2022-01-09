@@ -1,41 +1,55 @@
+body {
+  text-align: center;
+  margin:0;
+}
+
 .navbar {
   background-color: rgba(251, 249, 240, 0.95);
   height: 50px;
   display: flex;
   align-items: center;
-  margin-bottom:20px;
+  margin-bottom: 20px;
+}
+
+.word img{
+  width:10px;
+  margin-right:10px;
 }
 
 .container {
-  display: flex;
   margin: 0 auto;
   width: 1200px;
 }
 
 .col {
   display: inline-block;
+  vertical-align: top;
+  width: 20%;
 }
 
 .card {
-  width: 270px;
-  min-height:200px;
+  /* width: 270px; */
+  /* min-height:200px; */
   margin: 2px 5px 10px;
   padding: 0 0 15px;
   background: #fff;
   box-shadow: rgb(0 0 0 / 20%) 0 1px 2px 1px;
   transition: 0.15s;
   overflow: hidden;
-  max-height: 500px;
   text-align: center;
   cursor: pointer;
   position: relative;
 }
 .card:hover {
-  background: greenyellow;
+  background: #fff2d5;
 }
 
 .card:hover .title {
   color: white;
+}
+
+.card .content {
+  position: relative;
 }
 
 .title {
@@ -64,7 +78,7 @@
   margin-inline-start: 0px;
   margin-inline-end: 0px;
   max-height: 300px;
-  overflow-y:scroll;
+  overflow-y: scroll;
 }
 
 .categoryMenu {
@@ -73,8 +87,8 @@
   padding: 10px;
   background: white;
   border-radius: 5px;
-  z-index:5;
-  top:50px;
+  z-index: 5;
+  top: 40px;
 }
 
 .menuItem {
@@ -82,28 +96,28 @@
   cursor: pointer;
 }
 .menuItem:hover {
-  background: gray;
+  background: rgb(87, 86, 86);
   color: white;
 }
 
 .selectCategory {
   cursor: pointer;
   display: inline-block;
-  margin-right: 20px;
-  margin-left:50px;
+  margin-right: 10px;
+  margin-left: 50px;
   display: flex;
 }
-.pageInfo{
+.pageInfo {
 }
 
-.pageNumber.current{
+.pageNumber.current {
   font-weight: bold;
   color: black;
 }
-.pageInfo span{
-  margin-right:5px;
-  cursor:pointer;
-  color:gray;
+.pageInfo span {
+  margin-right: 5px;
+  cursor: pointer;
+  color: gray;
 }
 
 .myFavorite {
@@ -118,21 +132,75 @@
   bottom: 10px;
 }
 
+.editBtn {
+  width: 30px;
+  position: absolute;
+  right: 45px;
+  bottom: 10px;
+  cursor: pointer;
+}
+.editBtn img {
+  width: 100%;
+}
+
 .card .favoriteBtn {
   /* width: 100%; */
   /* display: none; */
-  background:url('favorite-icon-13.jpeg');
+  background: url('favorite-icon-13.jpeg');
 }
-.card .favoriteBtn img{
-    width:30px;
+.card .favoriteBtn img {
+  width: 30px;
 }
 .card .favoriteBtn.show {
   display: inline-block;
-  background:url('/favorite-icon-14.jpeg');
+  background: url('/favorite-icon-14.jpeg');
 }
 
 .card:hover .favoriteBtn img {
   display: inline-block;
 }
 
+.notePart {
+  height: 45px;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
 
+.editNote {
+  padding-left: 5px;
+}
+
+.note {
+  padding: 5px;
+  color: black;
+  max-width: 177px;
+  text-align: left;
+  word-break: break-all;
+}
+
+
+
+@media all and (min-width: 500px) and (max-width: 767px) {
+  .col {
+    width: 50%;
+  }
+  .container {
+    width: 100%;
+  }
+}
+
+@media all and (min-width: 160px) and (max-width: 500px) {
+  .col {
+    width: 90%;
+  }
+  .container {
+    width: 100%;
+  }
+  .navbar{
+    display: inline-block;
+  }
+  .card {
+    margin:10px 0px;
+  }
+}

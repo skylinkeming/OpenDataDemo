@@ -15,7 +15,7 @@
 <body>
     <div class="navbar">
         <div class="selectCategory">
-            <div class="word">選擇類別．音樂｜</div>
+            <div class="word"><img src='./down-arrow.png'><span>選擇類別．展覽｜</span></div>
             <div class="pageInfo"></div>
 
             <div class="categoryMenu"></div>
@@ -37,7 +37,7 @@
     <script>
         var _currentPage = 1;
         var _pageSize = 30;
-        var _categoryNumber = 1;
+        var _categoryNumber = 6;
         var _baseApiUrl = 'https://cloud.culture.tw/frontsite/trans/SearchShowAction.do?method=doFindTypeJ&category=';
         var _isFavoriteMode = false;
         var _resultList = [];
@@ -83,7 +83,8 @@
 
         function showFavoriteView() {
             $('.col').empty();
-            renderShowList(favoriteArray, true);
+            $('.pageInfo').empty();
+            renderShowList(favoriteArray.slice().reverse(), true);
 
         }
 
@@ -100,32 +101,61 @@
 
 
         function renderCard(showData, isFavorite) {
+            let $editNote = $('<div>').addClass('editNote').append(
+                $('<textarea>').keypress(function (e) {
+                    if (e.keyCode == '13') {
+                        if(!e.target.value){
+                            alert('請輸入內容！');
+                            return;
+                        }
+                        showData.note = e.target.value;
+                        alert('已存檔!');
+                        $editNote.hide();
+                        $note.text(`備註：${showData.note}`).show();
+                    }
+                })
+            );
+            let $note = $('<div>').addClass('note').text("備註：" + `${showData.note}`);
+            let $editBtn = $('<div>').addClass('editBtn').append($('<img>').attr('src', './edit.png')).on("click", (e) => {
+                e.stopPropagation();
+                $editNote.show();
+                $note.hide();
+            });
+
             return $('<div>').addClass('card').append(
-                $('<div>').addClass('title').text(showData.showInfo[0].locationName),
-                $('<div>').addClass('name').text(showData.title),
-                showData.imageUrl ? $('<img>').attr("src", showData.imageUrl) : null,
-                $('<div>').addClass('desc').html(showData.descriptionFilterHtml),
-                $('<div>').addClass('category').text("活動類別：" + showData.category),
-                renderFavoriteBtn(showData, isFavorite)
-            ).on("click", () => {
-                location.href = showData.sourceWebPromote
-            })
+                $('<div>').addClass('content').append(
+                    $('<div>').addClass('title').text(showData.showInfo[0].locationName),
+                    $('<div>').addClass('name').text(showData.title),
+                    showData.imageUrl ? $('<img>').attr("src", showData.imageUrl) : null,
+                    $('<div>').addClass('desc').html(showData.descriptionFilterHtml),
+
+                ).on("click", () => {
+                    location.href = showData.sourceWebPromote
+                }),
+                $('<div>').addClass("notePart").append(
+                    _isFavoriteMode && !!showData.note ? $note : $note.hide(),
+                    _isFavoriteMode ? $editBtn : null,
+                    renderFavoriteBtn(showData, isFavorite),
+                    $editNote.hide(),
+
+                )
+            )
         }
 
         function renderFavoriteBtn(showData, isFavorite) {
             return $('<div>').addClass('favoriteBtn').append(
-                $('<img>').attr('src', isFavorite ? '/favorite-icon-14.jpeg' : './favorite-icon-13.jpeg')
+                $('<img>').attr('src', isFavorite ? '/star.png' : './star_n.png')
                     .addClass(isFavorite ? "show" : "")
                     .on('click', (e) => {
                         e.stopPropagation();
                         if ($(e.currentTarget).hasClass('show')) {//取消最愛
-                            $(e.currentTarget).removeClass('show').attr('src', '/favorite-icon-13.jpeg');
+                            $(e.currentTarget).removeClass('show').attr('src', '/star_n.png');
                             favoriteArray = favoriteArray.filter(data => data.UID != showData.UID);
                             if (_isFavoriteMode) {
                                 showFavoriteView();
                             }
                         } else {//加入最愛
-                            $(e.currentTarget).addClass('show').attr('src', '/favorite-icon-14.jpeg');
+                            $(e.currentTarget).addClass('show').attr('src', '/star.png');
                             if (favoriteArray.indexOf(showData) < 0) {
                                 favoriteArray.push(showData);
                             }
@@ -133,6 +163,12 @@
                     })
             )
         }
+
+        function showEditPopup() {
+            $()
+
+        }
+
 
 
 
@@ -142,7 +178,7 @@
                 $menu.append(
                     $('<div>').addClass('menuItem').text(category).on("click", () => {
                         _categoryNumber = CategoryTypes[category];
-                        $('.selectCategory .word').text("選擇類別．" + category + "|")
+                        $('.selectCategory .word span').text("選擇類別．" + category + "｜")
                         renderMainView();
                     })
                 );
