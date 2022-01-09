@@ -15,7 +15,9 @@
 <body>
     <div class="navbar">
         <div class="selectCategory">
-            <div class="word">選擇類別</div>
+            <div class="word">選擇類別．音樂｜</div>
+            <div class="pageInfo"></div>
+
             <div class="categoryMenu"></div>
         </div>
         <div class="myFavorite">我的最愛</div>
@@ -23,6 +25,7 @@
 
 
     <div class="container">
+
         <div class="col"></div>
         <div class="col"></div>
         <div class="col"></div>
@@ -34,21 +37,43 @@
     <script>
         var _currentPage = 1;
         var _pageSize = 30;
-        var _category = 1;
+        var _categoryNumber = 1;
         var _baseApiUrl = 'https://cloud.culture.tw/frontsite/trans/SearchShowAction.do?method=doFindTypeJ&category=';
         var _isFavoriteMode = false;
+        var _resultList = [];
 
         function callAPI() {
-            return fetch(_baseApiUrl + _category, {
+            return fetch(_baseApiUrl + _categoryNumber, {
                 method: "GET",
             }).then(result => {
                 return result.json();
             }).then((resultList) => {
-                return resultList;
+                _resultList = resultList;
+                renderPageList(resultList);
+                return resultList.slice(0, _pageSize);
             });
         }
 
-        function refreshView() {
+        /*畫出分頁*/
+        function renderPageList(resultList) {
+            var totalPages = Math.ceil(resultList.length / _pageSize);
+            $('.pageInfo').empty();
+            for (let i = 0; i < totalPages; i++) {
+                $('.pageInfo').append(
+                    $('<span>').addClass("pageNumber").text(i + 1).on("click", (e) => {
+                        e.stopPropagation();
+                        $('.pageNumber').removeClass("current");
+                        $(e.currentTarget).addClass("current");
+                        var showList = resultList.slice((i) * _pageSize, (i) * _pageSize + _pageSize);
+                        $('.col').empty();
+                        renderShowList(showList);
+                    })
+                )
+            }
+            $('.pageNumber').eq(0).addClass("current");
+        }
+
+        function renderMainView() {
             $('.col').empty();
             callAPI().then(result => {
                 // console.log(result);
@@ -59,59 +84,66 @@
         function showFavoriteView() {
             $('.col').empty();
             renderShowList(favoriteArray, true);
-            
+
         }
 
 
         function renderShowList(spotDataList, isFavorite) {
-            var favoriteUIDs =  favoriteArray.map(data=>data.UID);
+            var favoriteUIDs = favoriteArray.map(data => data.UID);
 
             spotDataList.forEach((spotData, index) => {
                 $('.col').eq(index % 4).append(
-                    renderCard(spotData, favoriteUIDs.indexOf(spotData.UID)>=0)
+                    renderCard(spotData, favoriteUIDs.indexOf(spotData.UID) >= 0)
                 );
             });
         }
 
 
-        function renderCard(spotData, isFavorite) {
+        function renderCard(showData, isFavorite) {
             return $('<div>').addClass('card').append(
-                $('<div>').addClass('title').text(spotData.masterUnit[0]),
-                $('<div>').addClass('name').text(spotData.title),
-                spotData.imageUrl ? $('<img>').attr("src", spotData.imageUrl) : null,
-                $('<div>').addClass('desc').html(spotData.descriptionFilterHtml),
-                $('<div>').addClass('category').text("活動類別：" + spotData.category),
-                $('<div>').addClass('favoriteBtn').append(
-                    $('<img>').attr('src', isFavorite ? '/favorite-icon-14.jpeg' : './favorite-icon-13.jpeg')
-                        .addClass(isFavorite ? "show" : "")
-                        .on('click', (e) => {
-                            e.stopPropagation();
-                            if ($(e.currentTarget).hasClass('show')) {//取消最愛
-                                $(e.currentTarget).removeClass('show').attr('src', '/favorite-icon-13.jpeg');
-                                favoriteArray = favoriteArray.filter(data => data.UID != spotData.UID);
-                                if(_isFavoriteMode){
-                                    showFavoriteView();
-                                }
-                            } else {//加入最愛
-                                $(e.currentTarget).addClass('show').attr('src', '/favorite-icon-14.jpeg');
-                                if (favoriteArray.indexOf(spotData) < 0) {
-                                    favoriteArray.push(spotData);
-                                }
-                            }
-                        })
-                )
+                $('<div>').addClass('title').text(showData.showInfo[0].locationName),
+                $('<div>').addClass('name').text(showData.title),
+                showData.imageUrl ? $('<img>').attr("src", showData.imageUrl) : null,
+                $('<div>').addClass('desc').html(showData.descriptionFilterHtml),
+                $('<div>').addClass('category').text("活動類別：" + showData.category),
+                renderFavoriteBtn(showData, isFavorite)
             ).on("click", () => {
-                location.href = spotData.sourceWebPromote
+                location.href = showData.sourceWebPromote
             })
         }
+
+        function renderFavoriteBtn(showData, isFavorite) {
+            return $('<div>').addClass('favoriteBtn').append(
+                $('<img>').attr('src', isFavorite ? '/favorite-icon-14.jpeg' : './favorite-icon-13.jpeg')
+                    .addClass(isFavorite ? "show" : "")
+                    .on('click', (e) => {
+                        e.stopPropagation();
+                        if ($(e.currentTarget).hasClass('show')) {//取消最愛
+                            $(e.currentTarget).removeClass('show').attr('src', '/favorite-icon-13.jpeg');
+                            favoriteArray = favoriteArray.filter(data => data.UID != showData.UID);
+                            if (_isFavoriteMode) {
+                                showFavoriteView();
+                            }
+                        } else {//加入最愛
+                            $(e.currentTarget).addClass('show').attr('src', '/favorite-icon-14.jpeg');
+                            if (favoriteArray.indexOf(showData) < 0) {
+                                favoriteArray.push(showData);
+                            }
+                        }
+                    })
+            )
+        }
+
+
 
         function renderCategoryMenu() {
             let $menu = $('.categoryMenu');
             Object.keys(CategoryTypes).forEach(category => {
                 $menu.append(
                     $('<div>').addClass('menuItem').text(category).on("click", () => {
-                        _category = CategoryTypes[category];
-                        refreshView();
+                        _categoryNumber = CategoryTypes[category];
+                        $('.selectCategory .word').text("選擇類別．" + category + "|")
+                        renderMainView();
                     })
                 );
             });
@@ -119,18 +151,18 @@
             bindBtnEvent($menu);
         }
 
-        function bindBtnEvent($menu){
-            $(".selectCategory").on("click", () => {
+        function bindBtnEvent($menu) {
+            $(".selectCategory .word").on("click", () => {
                 if ($menu.is(":visible")) {
                     $menu.fadeOut();
                     return;
                 }
-                _isFavoriteMode = false;              
+                _isFavoriteMode = false;
                 $menu.fadeIn();
             });
 
             $('.myFavorite').on("click", () => {
-                _isFavoriteMode = true;  
+                _isFavoriteMode = true;
 
                 showFavoriteView();
 
@@ -139,12 +171,12 @@
 
         window.addEventListener("load", () => {
             setFavoriteFromLocalStorage();
-            refreshView();
+            renderMainView();
             renderCategoryMenu();
 
         });
 
-        window.addEventListener("beforeunload",()=>{
+        window.addEventListener("beforeunload", () => {
             saveFavoriteToLocalStorage();
         })
     </script>

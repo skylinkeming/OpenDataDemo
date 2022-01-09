@@ -55,7 +55,6 @@
 
 .desc {
   padding: 10px;
-
   line-height: 1.8;
   font-size: 10px;
   margin: 0 10px;
@@ -75,6 +74,7 @@
   background: white;
   border-radius: 5px;
   z-index:5;
+  top:50px;
 }
 
 .menuItem {
@@ -91,6 +91,19 @@
   display: inline-block;
   margin-right: 20px;
   margin-left:50px;
+  display: flex;
+}
+.pageInfo{
+}
+
+.pageNumber.current{
+  font-weight: bold;
+  color: black;
+}
+.pageInfo span{
+  margin-right:5px;
+  cursor:pointer;
+  color:gray;
 }
 
 .myFavorite {
