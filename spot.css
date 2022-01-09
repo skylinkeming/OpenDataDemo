@@ -126,17 +126,14 @@ body {
 }
 
 .favoriteBtn {
-  position: absolute;
+  /* position: absolute;s */
   width: 30px;
-  right: 10px;
-  bottom: 10px;
+  margin-right:5px;
 }
 
 .editBtn {
   width: 30px;
-  position: absolute;
-  right: 45px;
-  bottom: 10px;
+  margin-right:5px;
   cursor: pointer;
 }
 .editBtn img {
@@ -161,8 +158,6 @@ body {
 }
 
 .notePart {
-  height: 45px;
-  display: flex;
   align-items: center;
   position: relative;
 }
@@ -174,11 +169,28 @@ body {
 .note {
   padding: 5px;
   color: black;
-  max-width: 177px;
   text-align: left;
   word-break: break-all;
+  background: rgba(251, 249, 240, 0.95);
+  border-radius: 10px;
+  width:90%;
+  margin-left:auto;
+  margin-right:auto;
 }
 
+.bottom{
+  width: 100%;
+  height: 40px;
+  /* position: relative; */
+  display: flex;
+  align-items: center;
+  justify-content: right;
+}
+
+textarea{
+  height: 60px;
+  width:90%;
+}
 
 
 @media all and (min-width: 500px) and (max-width: 767px) {
@@ -203,4 +215,24 @@ body {
   .card {
     margin:10px 0px;
   }
+}
+
+
+
+.loader {
+  border: 10px solid #f3f3f3;
+  border-top: 10px solid cadetblue;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

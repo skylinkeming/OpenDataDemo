@@ -10,6 +10,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="spot.css">
+
 </head>
 
 <body>
@@ -17,7 +18,6 @@
         <div class="selectCategory">
             <div class="word"><img src='./down-arrow.png'><span>選擇類別．展覽｜</span></div>
             <div class="pageInfo"></div>
-
             <div class="categoryMenu"></div>
         </div>
         <div class="myFavorite">我的最愛</div>
@@ -25,7 +25,6 @@
 
 
     <div class="container">
-
         <div class="col"></div>
         <div class="col"></div>
         <div class="col"></div>
@@ -75,8 +74,10 @@
 
         function renderMainView() {
             $('.col').empty();
+            setLoader(true);
             callAPI().then(result => {
                 // console.log(result);
+                setLoader(false);
                 renderShowList(result);
             });
         }
@@ -102,22 +103,31 @@
 
         function renderCard(showData, isFavorite) {
             let $editNote = $('<div>').addClass('editNote').append(
-                $('<textarea>').keypress(function (e) {
+                $('<textarea>').text(showData.note).keypress(function (e) {
                     if (e.keyCode == '13') {
-                        if(!e.target.value){
+                        if (!e.target.value) {
                             alert('請輸入內容！');
                             return;
                         }
                         showData.note = e.target.value;
-                        alert('已存檔!');
+                        alert('已更新備註!');
                         $editNote.hide();
                         $note.text(`備註：${showData.note}`).show();
                     }
                 })
             );
             let $note = $('<div>').addClass('note').text("備註：" + `${showData.note}`);
-            let $editBtn = $('<div>').addClass('editBtn').append($('<img>').attr('src', './edit.png')).on("click", (e) => {
+            let $editBtn = $('<div>').addClass('editBtn').append(
+                $('<img>').attr({ 'src': './edit.png', 'alt': "編輯備註" })
+            ).on("click", (e) => {
                 e.stopPropagation();
+                if ($editNote.is(":visible")) {
+                    $editNote.hide();
+                    if(!!showData.note){
+                        $note.show();
+                    }
+                    return;
+                }
                 $editNote.show();
                 $note.hide();
             });
@@ -133,9 +143,12 @@
                     location.href = showData.sourceWebPromote
                 }),
                 $('<div>').addClass("notePart").append(
+                    $('<div>').addClass('bottom').append(
+                        _isFavoriteMode ? $editBtn : null,
+                        renderFavoriteBtn(showData, isFavorite)
+                    ),
                     _isFavoriteMode && !!showData.note ? $note : $note.hide(),
-                    _isFavoriteMode ? $editBtn : null,
-                    renderFavoriteBtn(showData, isFavorite),
+
                     $editNote.hide(),
 
                 )
@@ -164,9 +177,12 @@
             )
         }
 
-        function showEditPopup() {
-            $()
-
+        function setLoader(isOpen) {
+            if (isOpen) {
+                $('.container').append($('<div>').addClass('loader'));
+            } else {
+                $('.loader').remove();
+            }
         }
 
 
