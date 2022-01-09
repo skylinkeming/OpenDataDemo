@@ -1,6 +1,6 @@
 body {
   text-align: center;
-  margin:0;
+  margin: 0;
 }
 
 .navbar {
@@ -11,9 +11,9 @@ body {
   margin-bottom: 20px;
 }
 
-.word img{
-  width:10px;
-  margin-right:10px;
+.word img {
+  width: 10px;
+  margin-right: 10px;
 }
 
 .container {
@@ -128,12 +128,12 @@ body {
 .favoriteBtn {
   /* position: absolute;s */
   width: 30px;
-  margin-right:5px;
+  margin-right: 5px;
 }
 
 .editBtn {
   width: 30px;
-  margin-right:5px;
+  margin-right: 5px;
   cursor: pointer;
 }
 .editBtn img {
@@ -173,12 +173,12 @@ body {
   word-break: break-all;
   background: rgba(251, 249, 240, 0.95);
   border-radius: 10px;
-  width:90%;
-  margin-left:auto;
-  margin-right:auto;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.bottom{
+.bottom {
   width: 100%;
   height: 40px;
   /* position: relative; */
@@ -187,11 +187,10 @@ body {
   justify-content: right;
 }
 
-textarea{
+textarea {
   height: 60px;
-  width:90%;
+  width: 90%;
 }
-
 
 @media all and (min-width: 500px) and (max-width: 767px) {
   .col {
@@ -209,15 +208,34 @@ textarea{
   .container {
     width: 100%;
   }
-  .navbar{
+  .navbar {
     display: inline-block;
+    text-align: left;
+    padding-left: 10px;
+    padding-bottom:5px;
+    box-sizing: border-box;
+    height: auto;
+    width: 100%;
   }
   .card {
-    margin:10px 0px;
+    margin: 10px 0px;
+  }
+  .selectCategory {
+    display: inline-block;
+    margin: 0;
+    width: 100%;
+    overflow: hidden;
+  }
+  .categoryMenu {
+    top: 20px;
+  }
+  .myFavorite {
+    text-align: right;
+    width: 100%;
+    padding-right: 20px;
+    box-sizing: border-box;
   }
 }
-
-
 
 .loader {
   border: 10px solid #f3f3f3;
@@ -226,13 +244,17 @@ textarea{
   width: 30px;
   height: 30px;
   animation: spin 1s linear infinite;
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

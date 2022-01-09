@@ -31,11 +31,3 @@ var setFavoriteFromLocalStorage = () => {
   }
 }
 
-
-// var addToFavorite = (showData)=>{
-//     data = localStorage.getItem('favoriteArray')
-//     favoriteArray = JSON.parse(data);
-//     favoriteArray.push(showData);
-//     data = JSON.stringify(favoriteArray)
-//     localStorage.setItem('favoriteArray', data)
-// }
